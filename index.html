@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fanta Task - Pro Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #FF8C00; --dark: #121212; --card: #1e1e1e; --text: #ffffff; --gray: #b0b0b0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--dark); color: var(--text); padding-bottom: 90px; overflow-x: hidden; }
+
+        .app-bar { background: #fff; color: #000; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; position: sticky; top: 0; z-index: 100; }
+        header { background: #1a1a1a; padding: 25px 15px; text-align: center; border-bottom: 3px solid var(--primary); }
+        header h2 { font-size: 1.6rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 800; }
+        .orange { color: var(--primary); }
+        header p { font-size: 0.85rem; margin-top: 5px; color: #eee; }
+
+        .container { padding: 15px; max-width: 500px; margin: auto; }
+        .card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid #333; position: relative; }
+        
+        .top-pkr-box { background: linear-gradient(45deg, #FF8C00, #ffb347); color: #fff; padding: 15px; border-radius: 12px; text-align: center; font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(255,140,0,0.3); }
+
+        .task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+        .task-item { background: #252525; border-radius: 15px; padding: 25px 10px; text-align: center; cursor: pointer; border: 1px solid #333; transition: 0.2s; }
+        .task-item:active { transform: scale(0.95); }
+        .bottle-svg { width: 55px; height: 55px; margin-bottom: 10px; }
+        .claimed { opacity: 0.15; pointer-events: none; filter: grayscale(1); }
+
+        .pkg-info { background: #2c1e14; border-left: 5px solid var(--primary); padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: left; }
+        .method-box { border: 2px dashed var(--primary); padding: 15px; border-radius: 12px; margin-bottom: 15px; text-align: left; }
+        .num-highlight { color: var(--primary); font-weight: bold; font-size: 1.15rem; }
+
+        .stat-card { background: #1a1a1a; padding: 15px; border-radius: 12px; text-align: center; border-bottom: 3px solid var(--primary); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .btn { background: var(--primary); color: white; border: none; width: 100%; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 0.85rem; }
+        input, select { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: #252525; color: white; outline: none; }
+
+        nav { position: fixed; bottom: 0; width: 100%; max-width: 500px; background: #1a1a1a; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; left: 50%; transform: translateX(-50%); z-index: 1000; }
+        .nav-item { color: #888; text-align: center; font-size: 0.75rem; cursor: pointer; flex: 1; text-decoration: none; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+
+        .page { display: none; }
+        .active-page { display: block; }
+        #loader { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .ref-box { background: #252525; border: 1px dashed var(--primary); padding: 10px; border-radius: 10px; margin-top: 15px; text-align: center; word-break: break-all; font-size: 0.75rem; }
+        .wd-note { color: #ff4d4d; text-align: center; font-size: 0.85rem; font-weight: bold; margin-bottom: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><i class="fas fa-spinner fa-spin fa-3x orange"></i></div>
+
+    <!-- Auth -->
+    <div id="auth-screen" style="position:fixed; inset:0; background:var(--dark); z-index:2000; display:flex; align-items:center; justify-content:center; padding:20px;">
+        <div class="card" style="width:100%; max-width:400px; text-align:center;">
+            <h2 class="orange" style="letter-spacing: 2px; margin-bottom:20px;">FANTA TASK PRO</h2>
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="pass" placeholder="Password">
+            <button class="btn" onclick="window.handleAuth('login')">LOGIN</button>
+            <button class="btn" style="background:#333;" onclick="window.handleAuth('signup')">CREATE ACCOUNT</button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div id="main-app" style="display:none;">
+        <div class="app-bar"><span>Fanta Task - Pro Edition Panel</span><i class="fas fa-ellipsis-v"></i></div>
+        <header>
+            <h2>BOTTLE <span class="orange">TASK</span></h2>
+            <p>Next Reset: <span id="timer" class="orange">00:00:00</span></p>
+        </header>
+
+        <div class="container">
+            <!-- Tasks -->
+            <section id="page-tasks" class="page active-page">
+                <div class="top-pkr-box">Available Balance: PKR <span id="pkr-top">0.00</span></div>
+                <p id="expiry-info" style="text-align:center; font-size:0.75rem; color:#aaa; margin-bottom:10px;"></p>
+                <div class="task-grid" id="task-container"></div>
+            </section>
+
+            <!-- Plans -->
+            <section id="page-plans" class="page">
+                <div class="card">
+                    <h3 class="orange">Monthly Plans</h3>
+                    <p style="font-size:0.7rem; color:gray; margin-bottom:15px;">Note: 30 Days validity. Monthly renew required.</p>
+                    <div class="stats-grid">
+                        <div class="stat-card"><h4>100 PKR</h4><p>10 Tasks</p><button class="btn" onclick="window.buyPlan(100, 10)">Buy</button></div>
+                        <div class="stat-card"><h4>200 PKR</h4><p>20 Tasks</p><button class="btn" onclick="window.buyPlan(200, 20)">Buy</button></div>
+                        <div class="stat-card"><h4>500 PKR</h4><p>50 Tasks</p><button class="btn" onclick="window.buyPlan(500, 50)">Buy</button></div>
+                        <div class="stat-card"><h4>1000 PKR</h4><p>100 Tasks</p><button class="btn" onclick="window.buyPlan(1000, 100)">Buy</button></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deposit -->
+            <section id="page-deposit" class="page">
+                <div class="card">
+                    <h3 class="orange">Deposit Funds</h3>
+                    <div class="pkg-info">
+                        <p>- 10 PKR = 1 Daily Bottle (1 PKR/Day)</p>
+                        <p>- 100 PKR = 10 Bottles (10 PKR/Day)</p>
+                        <p>- 1000 PKR = 100 Bottles (100 PKR/Day)</p>
+                    </div>
+                    <div class="method-box">
+                        <p>Method: <strong>EasyPaisa</strong></p>
+                        <p>Name: <strong>TEHSIN ULLAH</strong></p>
+                        <p>Number: <strong class="orange" style="font-size:1.1rem">03019016682</strong></p>
+                    </div>
+                    <input type="number" id="dep-amount" placeholder="Amount Sent (PKR)">
+                    <input type="text" id="trx-id" placeholder="Transaction ID">
+                    <button class="btn" onclick="window.submitDeposit()">Submit Deposit</button>
+                </div>
+                <div id="dep-history"></div>
+            </section>
+
+            <!-- Withdraw (Fixed 500 Rule) -->
+            <section id="page-withdraw" class="page">
+                <p id="wd-req-msg" class="wd-note">1 Refer Kro Withdraw Ho Jaye Ga</p>
+                <div class="card">
+                    <h3 class="orange">Withdraw Profit</h3>
+                    <p style="font-size:0.8rem; margin-bottom:10px;">Note: You can ONLY withdraw exactly <b>500 PKR</b>.</p>
+                    <p>Wallet: <span class="orange">PKR <span id="wd-bal">0.00</span></span></p>
+                    <select id="wd-method"><option value="EasyPaisa">EasyPaisa</option><option value="JazzCash">JazzCash</option></select>
+                    <input type="number" id="wd-amount" value="500" readonly style="background:#333; cursor:not-allowed;">
+                    <input type="text" id="wd-acc" placeholder="Account Number">
+                    <button class="btn" style="background:#2ecc71;" onclick="window.submitWithdraw()">Request 500 PKR Withdraw</button>
+                </div>
+                <div id="wd-history"></div>
+            </section>
+
+            <!-- Profile -->
+            <section id="page-profile" class="page">
+                <div class="card" style="text-align:center;">
+                    <div class="user-avatar" style="width: 70px; height: 70px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 1.8rem;"><i class="fas fa-user-shield"></i></div>
+                    <h4 id="prof-email" style="font-size:0.85rem">...</h4>
+                    <div class="ref-box">
+                        <p style="font-size:0.7rem; color:#888;">Referral Link:</p>
+                        <p id="ref-link-text" style="color:var(--primary); font-size:0.7rem; font-weight:bold; margin-bottom:5px;">Loading...</p>
+                        <button onclick="window.copyRef()" style="background:var(--primary); border:none; color:white; padding:6px 12px; border-radius:5px; font-size:0.7rem; cursor:pointer;"><i class="fas fa-copy"></i> COPY LINK</button>
+                    </div>
+                    <div class="stats-grid" style="margin-top:10px;">
+                        <div class="stat-card"><span>Wallet</span><strong id="stat-bal">0.00</strong></div>
+                        <div class="stat-card"><span>Valid Refer</span><strong id="stat-qref">0</strong></div>
+                        <div class="stat-card"><span>Limit</span><strong id="stat-lim">0</strong></div>
+                        <div class="stat-card"><span>Days Left</span><strong id="stat-exp">N/A</strong></div>
+                    </div>
+                    <button class="btn" style="background:#e74c3c; margin-top:25px;" onclick="window.logout()">LOGOUT</button>
+                </div>
+            </section>
+        </div>
+
+        <nav>
+            <div class="nav-item active" onclick="window.nav('page-tasks', this)"><i class="fas fa-tasks"></i>Tasks</div>
+            <div class="nav-item" onclick="window.nav('page-plans', this)"><i class="fas fa-gem"></i>Plans</div>
+            <div class="nav-item" onclick="window.nav('page-deposit', this)"><i class="fas fa-plus-circle"></i>Deposit</div>
+            <div class="nav-item" onclick="window.nav('page-withdraw', this)"><i class="fas fa-wallet"></i>Withdraw</div>
+            <div class="nav-item" onclick="window.nav('page-profile', this)"><i class="fas fa-user-circle"></i>Profile</div>
+        </nav>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase, ref, set, update, onValue, push, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Your Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQ4YAWCLjKOwsL1ERCOMgCJLzH1jDiWa8",
+            authDomain: "fantatask.firebaseapp.com",
+            databaseURL: "https://fantatask-default-rtdb.firebaseio.com",
+            projectId: "fantatask",
+            storageBucket: "fantatask.firebasestorage.app",
+            messagingSenderId: "48737422345",
+            appId: "1:48737422345:web:4f12081a789a6026987cd8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        let userUID = null, userData = null;
+
+        window.handleAuth = async (type) => {
+            const e = document.getElementById('email').value, p = document.getElementById('pass').value;
+            if(!e || !p) return alert("Please fill fields.");
+            document.getElementById('loader').style.display = 'flex';
+            try {
+                if(type === 'signup') {
+                    const r = await createUserWithEmailAndPassword(auth, e, p);
+                    const urlParams = new URLSearchParams(window.location.search);
+                    await set(ref(db, 'users/' + r.user.uid), { 
+                        balance: 0, dailyLimit: 0, clickedIndices: [], 
+                        lastReset: new Date().toDateString(), referredBy: urlParams.get('ref') || null,
+                        qualifyingRefs: 0, usedQualifyingRefs: 0, withdrawCount: 0, planExpiry: 0 
+                    });
+                } else { await signInWithEmailAndPassword(auth, e, p); }
+            } catch(err) { alert(err.message); }
+            document.getElementById('loader').style.display = 'none';
+        };
+
+        onAuthStateChanged(auth, (u) => {
+            if(u) {
+                userUID = u.uid;
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+                document.getElementById('ref-link-text').innerText = window.location.origin + window.location.pathname + "?ref=" + userUID;
+                syncData();
+                fetchHistory('withdrawals', 'wd-history');
+                fetchHistory('deposits', 'dep-history');
+            } else {
+                document.getElementById('auth-screen').style.display = 'flex';
+                document.getElementById('main-app').style.display = 'none';
+            }
+        });
+
+        function syncData() {
+            onValue(ref(db, 'users/' + userUID), (snap) => {
+                userData = snap.val();
+                if(!userData) return;
+                const now = Date.now(), expiry = userData.planExpiry || 0;
+                let activeLimit = userData.dailyLimit || 0;
+
+                // Midnight Reset
+                if(userData.lastReset !== new Date().toDateString()) {
+                    update(ref(db, 'users/' + userUID), { clickedIndices: [], lastReset: new Date().toDateString() });
+                }
+
+                // Expiry
+                if(expiry > 0 && now > expiry) {
+                    activeLimit = 0; update(ref(db, 'users/' + userUID), { dailyLimit: 0, planExpiry: 0 });
+                }
+
+                const bal = userData.balance.toFixed(2);
+                document.getElementById('pkr-top').innerText = bal;
+                document.getElementById('wd-bal').innerText = bal;
+                document.getElementById('stat-bal').innerText = bal;
+                document.getElementById('stat-lim').innerText = activeLimit;
+                document.getElementById('stat-qref').innerText = (userData.qualifyingRefs || 0) - (userData.usedQualifyingRefs || 0);
+                document.getElementById('prof-email').innerText = auth.currentUser.email;
+
+                if(expiry > 0) {
+                    const days = Math.ceil((expiry - now) / (1000 * 3600 * 24));
+                    document.getElementById('stat-exp').innerText = days + " Days";
+                    document.getElementById('expiry-info').innerText = `${days} days left in plan.`;
+                } else {
+                    document.getElementById('stat-exp').innerText = "N/A";
+                    document.getElementById('expiry-info').innerText = "Purchase a plan to start.";
+                }
+
+                renderTasks(activeLimit, userData.clickedIndices || []);
+                let availableRefs = (userData.qualifyingRefs || 0) - (userData.usedQualifyingRefs || 0);
+                document.getElementById('wd-req-msg').style.display = ((userData.withdrawCount || 0) > 0 && availableRefs < 1) ? 'block' : 'none';
+            });
+        }
+
+        function renderTasks(limit, clicked) {
+            const container = document.getElementById('task-container'); container.innerHTML = '';
+            for(let i=0; i < limit; i++) {
+                const item = document.createElement('div');
+                item.className = 'task-item' + (clicked.includes(i) ? ' claimed' : '');
+                item.innerHTML = `<i class="fas fa-flask orange" style="font-size:2rem; margin-bottom:8px;"></i><p>Task</p>`;
+                item.onclick = () => window.claimReward(i);
+                container.appendChild(item);
+            }
+        }
+
+        window.claimReward = async (i) => {
+            const clicked = userData.clickedIndices || [];
+            if(!clicked.includes(i)) {
+                window.open("https://www.effectivegatecpm.com/af5sff7er?key=66dd1da5b8b51e17171a2bb8ad979781", '_blank');
+                clicked.push(i);
+                await update(ref(db, 'users/' + userUID), { balance: userData.balance + 1, clickedIndices: clicked });
+            }
+        };
+
+        window.submitDeposit = async () => {
+            const a = parseInt(document.getElementById('dep-amount').value), t = document.getElementById('trx-id').value;
+            if(!a || !t) return alert("Fill fields.");
+            if(a >= 500 && userData.referredBy) {
+                const rRef = ref(db, 'users/' + userData.referredBy);
+                const rSnap = await get(rRef);
+                if(rSnap.exists()) await update(rRef, { balance: rSnap.val().balance + 10, qualifyingRefs: (rSnap.val().qualifyingRefs || 0) + 1 });
+            }
+            await set(push(ref(db, 'deposits')), { uid: userUID, email: auth.currentUser.email, amount: a, trx: t, status: 'pending', date: new Date().toLocaleString() });
+            alert("Deposit Submitted!");
+        };
+
+        window.submitWithdraw = async () => {
+            const a = 500, acc = document.getElementById('wd-acc').value, method = document.getElementById('wd-method').value;
+            if(userData.balance < 500) return alert("Check balance (Min 500).");
+            let wCount = userData.withdrawCount || 0, availableRefs = (userData.qualifyingRefs || 0) - (userData.usedQualifyingRefs || 0);
+            if(wCount > 0 && availableRefs < 1) return alert("1 refer kro withdraw ho jaye ga!");
+
+            await set(push(ref(db, 'withdrawals')), { uid: userUID, email: auth.currentUser.email, amount: a, account: acc, method: method, status: 'pending', date: new Date().toLocaleString() });
+            let updates = { balance: userData.balance - a, withdrawCount: wCount + 1 };
+            if(wCount > 0) updates.usedQualifyingRefs = (userData.usedQualifyingRefs || 0) + 1;
+            await update(ref(db, 'users/' + userUID), updates);
+            alert("Sent!");
+        };
+
+        window.buyPlan = async (cost, limit) => {
+            if(userData.planExpiry > Date.now()) return alert("Plan already active!");
+            if(userData.balance < cost) return alert("Balance kam hai.");
+            await update(ref(db, 'users/' + userUID), { balance: userData.balance - cost, dailyLimit: limit, planExpiry: Date.now() + (30*24*3600*1000), clickedIndices: [] });
+            alert("Activated for 30 Days!");
+        };
+
+        window.copyRef = () => {
+            const link = document.getElementById('ref-link-text').innerText;
+            const el = document.createElement("textarea"); el.value = link;
+            document.body.appendChild(el); el.select(); document.execCommand('copy');
+            document.body.removeChild(el); alert("Link Copied!");
+        };
+
+        window.nav = (id, el) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active-page'); el.classList.add('active');
+        };
+        window.logout = () => signOut(auth);
+
+        function fetchHistory(node, containerId) {
+            const q = query(ref(db, node), orderByChild('uid'), equalTo(userUID));
+            onValue(q, (snap) => {
+                const container = document.getElementById(containerId); container.innerHTML = `<h4 class="orange" style="margin-top:15px;">History</h4>`;
+                snap.forEach(c => {
+                    const d = c.val();
+                    container.innerHTML += `<div class="card" style="padding:10px; font-size:0.8rem; margin-bottom:5px;">
+                        <strong>PKR ${d.amount}</strong> - ${d.status.toUpperCase()}
+                        <br><small style="color:#777">${d.date}</small>
+                    </div>`;
+                });
+            });
+        }
+
+        setInterval(() => {
+            const diff = new Date().setHours(24,0,0,0) - new Date();
+            document.getElementById('timer').innerText = new Date(diff < 0 ? diff + 86400000 : diff).toISOString().substr(11, 8);
+        }, 1000);
+    </script>
+    <script src="https://pl28633470.effectivegatecpm.com/48/59/08/4859083f886c1a09ed9a86ac9d282b9b.js"></script>
+</body>
+</html>
