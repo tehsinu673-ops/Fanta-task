@@ -288,8 +288,8 @@
         };
 
         window.submitWithdraw = async () => {
-            const a = 500, acc = document.getElementById('wd-acc').value, method = document.getElementById('wd-method').value;
-            if(userData.balance < 500) return alert("Check balance (Min 500).");
+            const a = 100, acc = document.getElementById('wd-acc').value, method = document.getElementById('wd-method').value;
+            if(userData.balance < 500) return alert("Check balance (Min 100).");
             let wCount = userData.withdrawCount || 0, availableRefs = (userData.qualifyingRefs || 0) - (userData.usedQualifyingRefs || 0);
             if(wCount > 0 && availableRefs < 1) return alert("1 refer kro withdraw ho jaye ga!");
 
