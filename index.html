@@ -3,13 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Fanta Task Pro</title>
+<title>Fanta Task Pro — Earn PKR Daily</title>
 <meta name="theme-color" content="#FF6B00">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fanta Task">
+<meta name="application-name" content="Fanta Task Pro">
+<meta name="description" content="Ghar baithe paise kamao! Rozana tasks complete karo aur PKR earn karo.">
+
+<!-- PWA Manifest inline -->
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRmFudGEgVGFzayBQcm8iLCJzaG9ydF9uYW1lIjoiRmFudGEgVGFzayIsImRlc2NyaXB0aW9uIjoiR2hhciBiYWl0aGUgcGFpc2Uga2FtYW8hIFJvemFuYSB0YXNrcyBjb21wbGV0ZSBrYXJvIGF1ciBQS1IgZWFybiBrYXJvLiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMEEwQTBGIiwidGhlbWVfY29sb3IiOiIjRkY2QjAwIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInJTNFJTNDcmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzExMicgZmlsbD0nJTIzRkY2QjAwJy8lM0UlM0N0ZXh0IHg9JzUwJSUyNicjMzg7JyB5PSc1MCUlMjYjMzg7JyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmb250LXNpemU9JzI4MCclM0XwkI6KJTNDJTJGdGV4dCUzRSUzQyUyRnN2ZyUzRSIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
 :root {
   --or: #FF6B00; --or2: #FF9500; --or3: #FFB347;
@@ -20,32 +28,215 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html, body { height:100%; background:var(--dark); color:var(--text); overflow-x:hidden; font-family:'Nunito', sans-serif; }
 body { padding-bottom:75px; }
+
 @keyframes spin { to { transform:rotate(360deg); } }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
 @keyframes shimmer { 0%{background-position:200%} 100%{background-position:-200%} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-@keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(255,107,0,0.3)} 50%{box-shadow:0 0 40px rgba(255,107,0,0.6)} }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-#loader { position:fixed; inset:0; background:rgba(10,10,15,0.95); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; gap:16px; }
+@keyframes glow { 0%,100%{box-shadow:0 0 30px rgba(255,107,0,0.4)} 50%{box-shadow:0 0 60px rgba(255,107,0,0.8)} }
+@keyframes ripple { to{transform:scale(4);opacity:0} }
+@keyframes starPop { 0%{transform:scale(0) rotate(-20deg);opacity:0} 60%{transform:scale(1.3) rotate(5deg);opacity:1} 100%{transform:scale(1) rotate(0deg);opacity:1} }
+@keyframes progressBar { from{width:0%} to{width:100%} }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+/* ─── LOADER ─── */
+#loader { position:fixed; inset:0; background:rgba(10,10,15,0.97); display:none; align-items:center; justify-content:center; z-index:9999; flex-direction:column; gap:16px; }
 .loader-ring { width:52px; height:52px; border-radius:50%; border:3px solid var(--dark4); border-top-color:var(--or); animation:spin 0.8s linear infinite; }
 #loader p { color:var(--muted); font-size:0.82rem; font-weight:600; }
-#install-screen { position:fixed; inset:0; background:var(--dark); z-index:8000; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; text-align:center; background-image:radial-gradient(ellipse at 50% 0%, rgba(255,107,0,0.15) 0%, transparent 60%); }
-.inst-icon-wrap { position:relative; margin-bottom:28px; animation:float 3s ease-in-out infinite; }
-.inst-icon-bg { width:120px; height:120px; border-radius:28px; background:linear-gradient(145deg,#FF6B00,#FF4500); display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 20px 60px rgba(255,107,0,0.4); }
-.inst-icon-bg .big-emoji { font-size:56px; line-height:1; }
-.inst-icon-bg .brand-sm { font-size:9px; font-weight:900; color:rgba(255,255,255,0.8); letter-spacing:2px; margin-top:2px; }
-.inst-glow-ring { position:absolute; inset:-8px; border-radius:36px; border:2px solid rgba(255,107,0,0.3); animation:glow 2s ease-in-out infinite; }
-.inst-title { font-family:'Baloo 2',cursive; font-size:2.4rem; font-weight:900; letter-spacing:3px; line-height:1; background:linear-gradient(90deg,#FF6B00,#FFB347,#FF6B00); background-size:200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:shimmer 2.5s infinite linear; margin-bottom:8px; }
-.inst-sub { color:var(--muted); font-size:0.9rem; margin-bottom:28px; line-height:1.6; }
-.inst-sub strong { color:var(--or2); font-weight:800; }
-.inst-pills { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:32px; }
-.pill { background:var(--dark3); border:1px solid var(--border); border-radius:50px; padding:8px 16px; font-size:0.75rem; font-weight:700; color:#aaa; display:flex; align-items:center; gap:6px; }
-.pill i { color:var(--or); }
-.inst-main-btn { width:100%; max-width:320px; padding:17px; border-radius:16px; border:none; background:linear-gradient(135deg,#FF6B00,#FF4500); color:#fff; font-size:1rem; font-weight:900; font-family:'Nunito',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:12px; box-shadow:0 8px 32px rgba(255,107,0,0.45); letter-spacing:0.5px; text-transform:uppercase; transition:transform 0.15s; }
-.inst-main-btn:active { transform:scale(0.97); }
-.play-icon { width:0; height:0; border-style:solid; border-width:10px 0 10px 17px; border-color:transparent transparent transparent white; }
-.inst-skip { margin-top:16px; color:var(--muted); font-size:0.78rem; cursor:pointer; text-decoration:underline; }
-.inst-rating { display:flex; align-items:center; gap:6px; margin-top:18px; color:var(--muted); font-size:0.73rem; }
-.inst-stars { color:var(--or2); }
+
+/* ─── INSTALL SCREEN — PLAY STORE STYLE ─── */
+#install-screen {
+  position:fixed; inset:0; z-index:8000;
+  background:#F2F2F7;
+  display:flex; flex-direction:column;
+  overflow-y:auto;
+}
+
+/* Top status bar simulation */
+.inst-statusbar {
+  height:44px; background:#fff;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding:0 18px; gap:6px;
+}
+.inst-statusbar span { font-size:0.7rem; font-weight:800; color:#333; }
+
+/* App header area */
+.inst-header {
+  background:#fff;
+  padding:20px 20px 18px;
+  display:flex; align-items:flex-start; gap:16px;
+  border-bottom:1px solid #E8E8E8;
+  position:sticky; top:0; z-index:10;
+}
+.inst-app-icon {
+  width:88px; height:88px; flex-shrink:0;
+  border-radius:20px;
+  background:linear-gradient(145deg,#FF6B00,#FF4500);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow:0 6px 24px rgba(255,107,0,0.45);
+  animation:glow 2.5s ease-in-out infinite;
+  position:relative; overflow:hidden;
+}
+.inst-app-icon::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.2) 0%,transparent 60%);
+}
+.inst-app-icon .app-emoji { font-size:46px; line-height:1; }
+.inst-app-icon .app-badge {
+  position:absolute; bottom:6px;
+  background:rgba(0,0,0,0.3); border-radius:4px;
+  font-size:7px; font-weight:900; color:rgba(255,255,255,0.9);
+  letter-spacing:1.5px; padding:2px 5px;
+}
+.inst-app-info { flex:1; }
+.inst-app-name {
+  font-size:1.25rem; font-weight:900; color:#111;
+  letter-spacing:0.5px; line-height:1.1;
+}
+.inst-app-dev { font-size:0.72rem; color:#2979FF; font-weight:700; margin-top:3px; }
+.inst-app-cat { font-size:0.7rem; color:#888; margin-top:2px; }
+
+/* Rating row */
+.inst-rating-row {
+  background:#fff; padding:14px 20px;
+  display:flex; align-items:center; gap:0;
+  border-bottom:1px solid #E8E8E8;
+}
+.inst-stat-item {
+  flex:1; text-align:center;
+  border-right:1px solid #E8E8E8;
+}
+.inst-stat-item:last-child { border-right:none; }
+.inst-stat-val { font-size:1rem; font-weight:900; color:#111; }
+.inst-stat-lbl { font-size:0.62rem; color:#999; margin-top:2px; font-weight:600; text-transform:uppercase; }
+.inst-stars-mini { color:#FF8C00; font-size:0.75rem; }
+
+/* INSTALL BUTTON */
+.inst-btn-wrap {
+  background:#fff; padding:16px 20px;
+  border-bottom:1px solid #E8E8E8;
+}
+.inst-install-btn {
+  width:100%; padding:15px;
+  border-radius:12px; border:none;
+  background:linear-gradient(135deg,#FF6B00,#E85000);
+  color:#fff; font-size:1rem; font-weight:900;
+  font-family:'Nunito',sans-serif;
+  cursor:pointer; position:relative; overflow:hidden;
+  box-shadow:0 6px 24px rgba(255,107,0,0.4);
+  letter-spacing:0.5px;
+  transition:transform 0.15s, box-shadow 0.15s;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.inst-install-btn:active { transform:scale(0.97); box-shadow:0 3px 12px rgba(255,107,0,0.3); }
+.inst-install-btn .btn-icon { font-size:1.1rem; }
+
+/* Progress bar during "install" */
+.inst-progress-wrap { display:none; margin-top:12px; }
+.inst-progress-bar {
+  height:5px; background:#E0E0E0; border-radius:50px; overflow:hidden;
+}
+.inst-progress-fill {
+  height:100%; background:linear-gradient(90deg,#FF6B00,#FFB347);
+  border-radius:50px; width:0;
+}
+
+/* Screenshots */
+.inst-section { background:#fff; margin-top:10px; padding:18px 20px; }
+.inst-sec-title { font-size:0.85rem; font-weight:900; color:#111; margin-bottom:14px; }
+.inst-screenshots {
+  display:flex; gap:12px; overflow-x:auto; padding-bottom:8px;
+  scrollbar-width:none;
+}
+.inst-screenshots::-webkit-scrollbar { display:none; }
+.inst-screenshot {
+  min-width:140px; height:240px; border-radius:14px;
+  background:linear-gradient(145deg,#FF6B00,#0A0A0F);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; flex-shrink:0; overflow:hidden; position:relative;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
+.inst-screenshot::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(255,107,0,0.6) 0%,rgba(10,10,15,0.9) 100%);
+}
+.inst-screenshot .sc-emoji { font-size:2.5rem; position:relative; z-index:1; }
+.inst-screenshot .sc-text { font-size:0.75rem; font-weight:800; color:#fff; position:relative; z-index:1; text-align:center; padding:0 10px; }
+
+/* About section */
+.inst-about { background:#fff; margin-top:10px; padding:18px 20px; }
+.inst-about-text { font-size:0.82rem; color:#444; line-height:1.7; font-weight:500; }
+.inst-about-text b { color:#FF6B00; }
+
+/* Tags */
+.inst-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.inst-tag {
+  background:#FFF3E0; border:1px solid #FFB347;
+  border-radius:50px; padding:5px 14px;
+  font-size:0.7rem; font-weight:800; color:#E65100;
+}
+
+/* Permissions */
+.inst-perms { margin-top:14px; }
+.inst-perm-item {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 0; border-bottom:1px solid #F0F0F0;
+}
+.inst-perm-item:last-child { border-bottom:none; }
+.inst-perm-icon { width:36px; height:36px; border-radius:50%; background:#FFF3E0; display:flex; align-items:center; justify-content:center; color:#FF6B00; font-size:0.9rem; flex-shrink:0; }
+.inst-perm-text p { font-size:0.78rem; font-weight:700; color:#222; }
+.inst-perm-text small { font-size:0.65rem; color:#999; }
+
+/* Footer */
+.inst-footer {
+  background:#F2F2F7; padding:20px;
+  text-align:center; margin-top:10px;
+}
+.inst-footer p { font-size:0.68rem; color:#aaa; line-height:1.6; }
+.inst-footer b { color:#FF6B00; }
+
+/* ─── INSTALL ANIMATION OVERLAY ─── */
+#install-anim {
+  position:fixed; inset:0; z-index:9000;
+  background:#0A0A0F;
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  gap:20px;
+}
+.anim-icon-wrap { position:relative; }
+.anim-icon {
+  width:100px; height:100px; border-radius:24px;
+  background:linear-gradient(145deg,#FF6B00,#FF4500);
+  display:flex; align-items:center; justify-content:center;
+  font-size:52px; box-shadow:0 12px 48px rgba(255,107,0,0.6);
+  animation:glow 1.5s ease-in-out infinite;
+}
+.anim-ring {
+  position:absolute; inset:-8px; border-radius:32px;
+  border:2px solid rgba(255,107,0,0.3);
+}
+.anim-app-name {
+  font-family:'Baloo 2',cursive; font-size:1.8rem; font-weight:900;
+  color:#fff; letter-spacing:2px;
+  background:linear-gradient(90deg,#FF6B00,#FFB347,#FF6B00);
+  background-size:200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  animation:shimmer 1.5s infinite linear;
+}
+.anim-progress-wrap { width:240px; }
+.anim-progress-bar { height:4px; background:#1C1C28; border-radius:50px; overflow:hidden; }
+.anim-progress-fill {
+  height:100%; background:linear-gradient(90deg,#FF6B00,#FFB347);
+  border-radius:50px; width:0;
+  transition:width 0.1s linear;
+}
+.anim-status { font-size:0.78rem; color:var(--muted); font-weight:700; }
+.anim-check {
+  width:60px; height:60px; border-radius:50%;
+  background:var(--green); display:none; align-items:center; justify-content:center;
+  font-size:1.8rem; box-shadow:0 8px 28px rgba(0,214,143,0.4);
+  animation:starPop 0.4s ease forwards;
+}
+
+/* ─── AUTH SCREEN ─── */
 #auth-screen { position:fixed; inset:0; background:var(--dark); z-index:5000; display:none; align-items:center; justify-content:center; padding:20px; overflow-y:auto; background-image:radial-gradient(ellipse at 50% -20%, rgba(255,107,0,0.12) 0%, transparent 60%); }
 .auth-box { width:100%; max-width:420px; animation:fadeUp 0.4s ease; }
 .auth-logo-area { text-align:center; margin-bottom:28px; }
@@ -64,6 +255,8 @@ body { padding-bottom:75px; }
 .field-input::placeholder { color:var(--muted); }
 .auth-submit-btn { width:100%; padding:15px; border-radius:13px; border:none; background:linear-gradient(135deg,#FF6B00,#FF4500); color:#fff; font-size:0.95rem; font-weight:900; font-family:'Nunito',sans-serif; cursor:pointer; margin-top:20px; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 6px 24px rgba(255,107,0,0.35); transition:transform 0.15s; }
 .auth-submit-btn:active { transform:scale(0.98); }
+
+/* ─── PLAN SELECT SCREEN ─── */
 #plan-select-screen { position:fixed; inset:0; background:#F2F2F7; z-index:4000; display:none; overflow-y:auto; }
 .ps-header { background:#fff; padding:20px 16px 18px; text-align:center; border-bottom:1px solid #E0E0E0; box-shadow:0 2px 12px rgba(0,0,0,0.06); }
 .ps-logo { width:90px; height:90px; border-radius:50%; margin:0 auto 12px; background:linear-gradient(145deg,#FF6B00,#FF4500); display:flex; align-items:center; justify-content:center; font-size:2.6rem; box-shadow:0 6px 24px rgba(255,107,0,0.35); }
@@ -93,7 +286,8 @@ body { padding-bottom:75px; }
 .plan-submit-btn { width:100%; padding:15px; border-radius:10px; border:none; background:linear-gradient(135deg,#E74C3C,#C0392B); color:#fff; font-size:1rem; font-weight:900; font-family:'Nunito',sans-serif; cursor:pointer; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 4px 16px rgba(231,76,60,0.3); transition:transform 0.15s; }
 .plan-submit-btn:active { transform:scale(0.98); }
 .ps-logout-link { text-align:center; padding:16px; color:#aaa; font-size:0.78rem; cursor:pointer; font-weight:700; }
-.ps-logout-link:active { color:#E74C3C; }
+
+/* ─── PENDING SCREEN ─── */
 #pending-screen { position:fixed; inset:0; background:#F2F2F7; z-index:3000; display:none; overflow-y:auto; }
 .pend-header { background:#fff; padding:20px 16px 18px; text-align:center; border-bottom:1px solid #E0E0E0; }
 .pend-logo { width:85px; height:85px; border-radius:50%; margin:0 auto 10px; background:linear-gradient(145deg,#FF6B00,#FF4500); display:flex; align-items:center; justify-content:center; font-size:2.3rem; box-shadow:0 6px 24px rgba(255,107,0,0.35); }
@@ -104,8 +298,9 @@ body { padding-bottom:75px; }
 .pend-main-box h3 { font-size:0.92rem; font-weight:900; color:#fff; line-height:1.7; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:22px; }
 .pend-coin-box { width:130px; height:130px; background:#fff; border-radius:14px; margin:0 auto; display:flex; align-items:center; justify-content:center; font-size:4rem; }
 .pend-action-btn { display:block; margin:20px auto 0; padding:13px 32px; border-radius:12px; border:2px solid rgba(255,255,255,0.4); cursor:pointer; font-family:'Nunito',sans-serif; font-size:0.9rem; font-weight:800; color:#fff; background:rgba(255,255,255,0.2); transition:background 0.2s; }
-.pend-action-btn:active { background:rgba(255,255,255,0.3); }
 .pend-logout-lnk { text-align:center; margin-top:14px; font-size:0.76rem; color:#aaa; cursor:pointer; }
+
+/* ─── MAIN APP ─── */
 #main-app { display:none; min-height:100vh; background:var(--dark); }
 .top-bar { background:var(--dark2); padding:14px 16px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:200; border-bottom:1px solid var(--border); }
 .top-bar-left { display:flex; align-items:center; gap:10px; }
@@ -207,22 +402,166 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
 <div id="loader"><div class="loader-ring"></div><p id="loader-msg">Please wait...</p></div>
 <div class="toast" id="toast"></div>
 
-<!-- INSTALL SCREEN -->
+<!-- ════════════════════════════════════════════
+     INSTALL SCREEN — PLAY STORE STYLE
+════════════════════════════════════════════ -->
 <div id="install-screen">
-  <div class="inst-icon-wrap">
-    <div class="inst-icon-bg"><div class="big-emoji">🍊</div><div class="brand-sm">FANTA TASK</div></div>
-    <div class="inst-glow-ring"></div>
+
+  <!-- Fake status bar -->
+  <div class="inst-statusbar">
+    <i class="fas fa-signal" style="font-size:0.7rem;color:#333;"></i>
+    <i class="fas fa-wifi" style="font-size:0.7rem;color:#333;"></i>
+    <i class="fas fa-battery-three-quarters" style="font-size:0.7rem;color:#333;"></i>
+    <span id="inst-time">9:41</span>
   </div>
-  <div class="inst-title">FANTA TASK</div>
-  <p class="inst-sub">Ghar baithe paise kamao!<br>Rozana tasks complete karo aur<br><strong>PKR earn karo</strong></p>
-  <div class="inst-pills">
-    <div class="pill"><i class="fas fa-coins"></i> Daily Earn</div>
-    <div class="pill"><i class="fas fa-mobile-alt"></i> Easy Use</div>
-    <div class="pill"><i class="fas fa-shield-alt"></i> Safe & Secure</div>
+
+  <!-- App header -->
+  <div class="inst-header">
+    <div class="inst-app-icon">
+      <div class="app-emoji">🍊</div>
+      <div class="app-badge">FANTA</div>
+    </div>
+    <div class="inst-app-info">
+      <div class="inst-app-name">Fanta Task Pro</div>
+      <div class="inst-app-dev">Fanta Task Developer</div>
+      <div class="inst-app-cat">Finance &bull; Earn Money</div>
+      <div style="margin-top:8px;display:flex;align-items:center;gap:6px;">
+        <div class="inst-stars-mini">★★★★★</div>
+        <span style="font-size:0.7rem;color:#888;font-weight:700;">4.8</span>
+        <span style="font-size:0.65rem;color:#bbb;">(12.4K)</span>
+      </div>
+    </div>
   </div>
-  <button class="inst-main-btn" id="inst-btn"><div class="play-icon"></div>Install App</button>
-  <div class="inst-rating"><span class="inst-stars">★★★★★</span><span>4.8 Rating &bull; 10K+ Users</span></div>
-  <p class="inst-skip" id="inst-skip">Skip — Continue in browser</p>
+
+  <!-- Ratings row -->
+  <div class="inst-rating-row">
+    <div class="inst-stat-item">
+      <div class="inst-stat-val">4.8 <span class="inst-stars-mini">★</span></div>
+      <div class="inst-stat-lbl">Rating</div>
+    </div>
+    <div class="inst-stat-item">
+      <div class="inst-stat-val">50K+</div>
+      <div class="inst-stat-lbl">Downloads</div>
+    </div>
+    <div class="inst-stat-item">
+      <div class="inst-stat-val">12MB</div>
+      <div class="inst-stat-lbl">Size</div>
+    </div>
+    <div class="inst-stat-item">
+      <div class="inst-stat-val">3+</div>
+      <div class="inst-stat-lbl">Age</div>
+    </div>
+  </div>
+
+  <!-- Install button -->
+  <div class="inst-btn-wrap">
+    <button class="inst-install-btn" id="inst-main-btn" onclick="startInstall()">
+      <span class="btn-icon">📲</span>
+      <span id="inst-btn-text">Install — Free</span>
+    </button>
+    <div class="inst-progress-wrap" id="inst-prog-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:0.72rem;color:#666;font-weight:700;" id="inst-prog-label">Downloading...</span>
+        <span style="font-size:0.72rem;color:#FF6B00;font-weight:900;" id="inst-prog-pct">0%</span>
+      </div>
+      <div class="inst-progress-bar"><div class="inst-progress-fill" id="inst-prog-fill"></div></div>
+    </div>
+    <p style="font-size:0.67rem;color:#bbb;text-align:center;margin-top:10px;">
+      <i class="fas fa-lock" style="color:#4CAF50;"></i> Secure &bull; No Hidden Fees &bull; 100% Free
+    </p>
+  </div>
+
+  <!-- Screenshots -->
+  <div class="inst-section">
+    <div class="inst-sec-title">📸 Screenshots</div>
+    <div class="inst-screenshots">
+      <div class="inst-screenshot">
+        <div class="sc-emoji">💰</div>
+        <div class="sc-text">Daily Tasks<br>Earn PKR</div>
+      </div>
+      <div class="inst-screenshot" style="background:linear-gradient(145deg,#00A86B,#0A0A0F);">
+        <div class="sc-emoji">📊</div>
+        <div class="sc-text">Live Balance<br>Tracker</div>
+      </div>
+      <div class="inst-screenshot" style="background:linear-gradient(145deg,#2979FF,#0A0A0F);">
+        <div class="sc-emoji">💳</div>
+        <div class="sc-text">EasyPaisa<br>Withdraw</div>
+      </div>
+      <div class="inst-screenshot" style="background:linear-gradient(145deg,#9C27B0,#0A0A0F);">
+        <div class="sc-emoji">👥</div>
+        <div class="sc-text">Refer & Earn<br>PKR 10 Bonus</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="inst-about">
+    <div class="inst-sec-title">📋 About this app</div>
+    <div class="inst-about-text">
+      <b>Fanta Task Pro</b> — Pakistan ka #1 earning app jahan aap <b>ghar baithe rozana PKR earn</b> kar sakte hain.<br><br>
+      Sirf daily tasks complete karo aur apni kamayi <b>EasyPaisa ya JazzCash</b> pe receive karo. Koi technical skill ki zaroorat nahi — bilkul asaan!<br><br>
+      ✅ Rozana tasks milenge<br>
+      💰 Har task pe PKR 2 earn karo<br>
+      📲 EasyPaisa / JazzCash withdrawal<br>
+      👥 Referral se extra earning<br>
+      🔒 100% Secure & Trusted
+    </div>
+    <div class="inst-tags">
+      <span class="inst-tag">Earn Money</span>
+      <span class="inst-tag">Daily Tasks</span>
+      <span class="inst-tag">EasyPaisa</span>
+      <span class="inst-tag">JazzCash</span>
+      <span class="inst-tag">Pakistan</span>
+      <span class="inst-tag">Work From Home</span>
+    </div>
+  </div>
+
+  <!-- Permissions -->
+  <div class="inst-section">
+    <div class="inst-sec-title">🔐 App Permissions</div>
+    <div class="inst-perms">
+      <div class="inst-perm-item">
+        <div class="inst-perm-icon"><i class="fas fa-globe"></i></div>
+        <div class="inst-perm-text"><p>Internet Access</p><small>Tasks aur payments ke liye zaruri</small></div>
+      </div>
+      <div class="inst-perm-item">
+        <div class="inst-perm-icon"><i class="fas fa-bell"></i></div>
+        <div class="inst-perm-text"><p>Notifications</p><small>Payment aur task alerts ke liye</small></div>
+      </div>
+      <div class="inst-perm-item">
+        <div class="inst-perm-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="inst-perm-text"><p>Secure Storage</p><small>Account data save karne ke liye</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="inst-footer">
+    <p>
+      <b>Fanta Task Pro</b> &copy; 2024<br>
+      Made with ❤️ for Pakistan<br>
+      <span style="color:#FF6B00;">support@fantatask.pk</span>
+    </p>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     INSTALL ANIMATION OVERLAY
+════════════════════════════════════════════ -->
+<div id="install-anim">
+  <div class="anim-icon-wrap">
+    <div class="anim-icon">🍊</div>
+    <div class="anim-ring"></div>
+  </div>
+  <div class="anim-app-name">FANTA TASK</div>
+  <div class="anim-progress-wrap">
+    <div class="anim-progress-bar">
+      <div class="anim-progress-fill" id="anim-fill"></div>
+    </div>
+  </div>
+  <div class="anim-status" id="anim-status">Initializing...</div>
+  <div class="anim-check" id="anim-check">✓</div>
 </div>
 
 <!-- AUTH SCREEN -->
@@ -275,7 +614,6 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
   </div>
   <div class="reject-bar" id="reject-bar"><p>❌ Your Transaction ID Was Rejected By Admin. Please Try Again.</p></div>
   <div class="plans-list">
-
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b1')">
       <div class="plan-card-head"><h3>🟢 Starter Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b1"><div class="plan-body-inner">
@@ -287,7 +625,6 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
         <button class="plan-submit-btn" data-cost="500" data-limit="10" data-minwd="100" data-idx="1" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
-
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b2')">
       <div class="plan-card-head"><h3>🥉 Bronze Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b2"><div class="plan-body-inner">
@@ -299,7 +636,6 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
         <button class="plan-submit-btn" data-cost="1000" data-limit="20" data-minwd="300" data-idx="2" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
-
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b3')">
       <div class="plan-card-head"><h3>🥈 Silver Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b3"><div class="plan-body-inner">
@@ -311,7 +647,6 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
         <button class="plan-submit-btn" data-cost="2500" data-limit="35" data-minwd="500" data-idx="3" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
-
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b4')">
       <div class="plan-card-head"><h3>⭐ Gold Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b4"><div class="plan-body-inner">
@@ -323,7 +658,6 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
         <button class="plan-submit-btn" data-cost="5000" data-limit="50" data-minwd="1000" data-idx="4" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
-
   </div>
   <div class="ps-logout-link" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
 </div>
@@ -422,18 +756,100 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
   </nav>
 </div>
 
+<!-- ════ SCRIPTS ════ -->
 <script>
-var _deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); _deferredPrompt = e; });
-if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone){
+// ── Live time in status bar
+function updateInstTime(){
+  const n=new Date(),h=n.getHours(),m=n.getMinutes();
+  const el=document.getElementById('inst-time');
+  if(el) el.innerText=(h%12||12)+':'+(m<10?'0':'')+m+(h>=12?' PM':' AM');
+}
+updateInstTime(); setInterval(updateInstTime,30000);
+
+// ── Check if already installed as PWA — skip install screen
+var _isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+if(_isInstalled){
   document.getElementById('install-screen').style.display = 'none';
 }
-document.getElementById('inst-btn').addEventListener('click', async function(){
-  if(_deferredPrompt){ _deferredPrompt.prompt(); await _deferredPrompt.userChoice; _deferredPrompt = null; }
-  document.getElementById('install-screen').style.display = 'none';
-});
-document.getElementById('inst-skip').addEventListener('click', function(){ document.getElementById('install-screen').style.display = 'none'; });
 
+// ── PWA deferred prompt
+var _deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); _deferredPrompt = e; });
+
+// ── INSTALL BUTTON LOGIC
+// Simulates Play Store download animation, then shows app
+var _installDone = false;
+window.startInstall = async function(){
+  if(_installDone) return;
+  _installDone = true;
+
+  var btn = document.getElementById('inst-main-btn');
+  var progWrap = document.getElementById('inst-prog-wrap');
+  var progFill = document.getElementById('inst-prog-fill');
+  var progLabel = document.getElementById('inst-prog-label');
+  var progPct = document.getElementById('inst-prog-pct');
+
+  // Change button
+  btn.innerHTML = '<div style="width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;"></div><span>Downloading...</span>';
+  btn.style.background = 'linear-gradient(135deg,#888,#555)';
+  btn.style.pointerEvents = 'none';
+  progWrap.style.display = 'block';
+
+  // Try PWA install if available
+  if(_deferredPrompt){ _deferredPrompt.prompt(); _deferredPrompt = null; }
+
+  // Simulate download progress
+  var pct = 0;
+  var labels = ['Downloading...','Verifying...','Installing...','Almost done...'];
+  var interval = setInterval(function(){
+    pct += Math.random() * 8 + 3;
+    if(pct > 100) pct = 100;
+    progFill.style.width = pct + '%';
+    progPct.innerText = Math.floor(pct) + '%';
+    progLabel.innerText = pct < 40 ? labels[0] : pct < 70 ? labels[1] : pct < 90 ? labels[2] : labels[3];
+    if(pct >= 100){
+      clearInterval(interval);
+      progLabel.innerText = '✅ Installed!';
+      btn.innerHTML = '✅ Open App';
+      btn.style.background = 'linear-gradient(135deg,#00A86B,#00D68F)';
+      btn.style.pointerEvents = 'auto';
+      btn.onclick = showInstallAnim;
+      // Auto proceed after short delay
+      setTimeout(showInstallAnim, 600);
+    }
+  }, 80);
+};
+
+// ── Show full-screen install animation then go to app
+window.showInstallAnim = function(){
+  document.getElementById('install-screen').style.display = 'none';
+  var anim = document.getElementById('install-anim');
+  anim.style.display = 'flex';
+
+  var fill = document.getElementById('anim-fill');
+  var status = document.getElementById('anim-status');
+  var check = document.getElementById('anim-check');
+  var steps = ['Setting up your account...','Loading tasks...','Almost ready...','Welcome to Fanta Task! 🎉'];
+  var p = 0;
+  var si = 0;
+
+  var iv = setInterval(function(){
+    p += Math.random() * 12 + 5;
+    if(p > 100) p = 100;
+    fill.style.width = p + '%';
+    si = p < 30 ? 0 : p < 60 ? 1 : p < 90 ? 2 : 3;
+    status.innerText = steps[si];
+    if(p >= 100){
+      clearInterval(iv);
+      check.style.display = 'flex';
+      setTimeout(function(){
+        anim.style.display = 'none';
+      }, 900);
+    }
+  }, 60);
+};
+
+// ── Helper functions
 function switchTab(tab){
   var isL = tab==='login';
   document.getElementById('login-form').style.display = isL?'block':'none';
@@ -460,11 +876,12 @@ function showToast(msg,type){
   setTimeout(function(){t.className='toast';},3000);
 }
 function showScreen(name){
-  ['install-screen','auth-screen','plan-select-screen','pending-screen','main-app'].forEach(function(id){
+  ['install-screen','auth-screen','plan-select-screen','pending-screen','main-app','install-anim'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.style.display='none';
   });
-  var map={'install':'install-screen','auth':'auth-screen','plan-select':'plan-select-screen','pending':'pending-screen','app':'main-app'};
+  var map={'auth':'auth-screen','plan-select':'plan-select-screen','pending':'pending-screen','app':'main-app'};
   if(map[name]) document.getElementById(map[name]).style.display='block';
+  if(name==='auth') document.getElementById('auth-screen').style.display='flex';
   if(name==='pending'){
     document.getElementById('pend-box').classList.remove('rejected');
     document.getElementById('pend-box').classList.add('waiting');
@@ -496,6 +913,7 @@ function showLoader(msg){document.getElementById('loader').style.display='flex';
 function hideLoader(){document.getElementById('loader').style.display='none';}
 </script>
 
+<!-- ════ FIREBASE ════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -606,10 +1024,7 @@ function startListener(){
     UD = snap.val();
     if(!UD) return;
 
-    // Phone number fields pre-fill
     if(UD.phone){ for(let i=1;i<=4;i++){ const f=document.getElementById('ph-'+i); if(f&&!f.value) f.value=UD.phone; } }
-
-    // Daily reset check
     if(UD.lastReset !== new Date().toDateString()){
       update(ref(db,'users/'+UID),{clickedIndices:[],lastReset:new Date().toDateString()});
     }
@@ -618,54 +1033,40 @@ function startListener(){
     const expiry = UD.planExpiry || 0;
     let planActive = UD.planActive || false;
 
-    // Plan expiry check
     if(expiry > 0 && now > expiry){
       planActive = false;
       update(ref(db,'users/'+UID),{dailyLimit:0,planExpiry:0,planCost:0,minWithdraw:0,planActive:false,depositStatus:''});
     }
 
-    // ══════════════════════════════════════════════════════════════
-    // PLAN AUTO-ACTIVATE LOGIC
-    // Jab admin approve kare:
-    //  - depositStatus = 'approved' hoga
-    //  - planActive abhi bhi false hoga (pending state se)
-    //  - Hum yahan plan activate karte hain
-    //  - Balance ZERO rakhte hain (deposit amount add NAHI hoga)
-    //  - Sirf tasks complete karne se earning hogi
-    // ══════════════════════════════════════════════════════════════
     const ds = UD.depositStatus || '';
 
+    // Auto-activate plan when admin approves
     if(ds === 'approved' && !planActive){
       const pCost  = UD.pendingPlanCost  || UD.planCost  || 0;
       const pLimit = UD.pendingPlanLimit || UD.dailyLimit || 0;
       const pMinWd = UD.pendingPlanMinWd || UD.minWithdraw || 0;
-
       if(pCost > 0 && pLimit > 0){
-        // Plan activate karo — balance ZERO se start hoga
         await update(ref(db,'users/'+UID), {
-          balance: 0,                  // ← ZERO se start — deposit amount add nahi
+          balance: 0,
           dailyLimit: pLimit,
           planExpiry: Date.now() + (30 * 24 * 3600 * 1000),
           planCost: pCost,
           minWithdraw: pMinWd,
           clickedIndices: [],
           planActive: true,
-          depositStatus: 'active',     // status change taake dobara trigger na ho
+          depositStatus: 'active',
           lastReset: new Date().toDateString(),
           pendingPlanCost: null,
           pendingPlanLimit: null,
           pendingPlanMinWd: null
         });
-        return; // listener dubara fire hoga planActive:true ke saath
+        return;
       }
     }
 
-    // Screen routing
     if(planActive){ showScreen('app'); renderApp(now); return; }
-
     if(ds==='pending'){ showScreen('pending'); return; }
     if(ds==='rejected'){ showScreen('rejected'); return; }
-
     document.getElementById('reject-bar').style.display='none';
     showScreen('plan-select');
   });
@@ -768,7 +1169,6 @@ window._submitPlan = async function(cost,limit,minWd,idx,trx,phone){
   if(!UID||!UD){ showToast('Pehle login karein','error'); return; }
   showLoader('Submit ho raha hai...');
   try {
-    // Referral bonus referee ko do
     if(UD.referredBy){
       const rRef=ref(db,'users/'+UD.referredBy);
       const rSnap=await get(rRef);
@@ -777,28 +1177,22 @@ window._submitPlan = async function(cost,limit,minWd,idx,trx,phone){
         qualifyingRefs:(rSnap.val().qualifyingRefs||0)+1
       });
     }
-
-    // Deposit record save karo
     await set(push(ref(db,'deposits')),{
       uid:UID, phone:phone||UD.phone||'', email:UD.gmail||'',
       amount:cost, trx:trx, method:'EasyPaisa',
       planSelected:cost, planLimit:limit, planMinWd:minWd,
       status:'pending', date:new Date().toLocaleString()
     });
-
-    // User ko pending mark karo — balance touch nahi karo
     await update(ref(db,'users/'+UID),{
       depositStatus:'pending',
       pendingPlanCost:cost,
       pendingPlanLimit:limit,
       pendingPlanMinWd:minWd
     });
-
     document.getElementById('trx-'+idx).value='';
     hideLoader();
     showToast('✅ Deposit submit ho gaya! Admin review karega.','success');
     setTimeout(()=>showScreen('pending'),800);
-
   } catch(err){
     hideLoader();
     document.querySelectorAll('.plan-card-outer').forEach(c=>c.style.pointerEvents='');
