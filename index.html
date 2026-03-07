@@ -195,47 +195,6 @@ body { padding-bottom:75px; }
 .inst-footer p { font-size:0.68rem; color:#aaa; line-height:1.6; }
 .inst-footer b { color:#FF6B00; }
 
-/* ─── INSTALL ANIMATION OVERLAY ─── */
-#install-anim {
-  position:fixed; inset:0; z-index:9000;
-  background:#0A0A0F;
-  display:none; flex-direction:column; align-items:center; justify-content:center;
-  gap:20px;
-}
-.anim-icon-wrap { position:relative; }
-.anim-icon {
-  width:100px; height:100px; border-radius:24px;
-  background:linear-gradient(145deg,#FF6B00,#FF4500);
-  display:flex; align-items:center; justify-content:center;
-  font-size:52px; box-shadow:0 12px 48px rgba(255,107,0,0.6);
-  animation:glow 1.5s ease-in-out infinite;
-}
-.anim-ring {
-  position:absolute; inset:-8px; border-radius:32px;
-  border:2px solid rgba(255,107,0,0.3);
-}
-.anim-app-name {
-  font-family:'Baloo 2',cursive; font-size:1.8rem; font-weight:900;
-  color:#fff; letter-spacing:2px;
-  background:linear-gradient(90deg,#FF6B00,#FFB347,#FF6B00);
-  background-size:200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  animation:shimmer 1.5s infinite linear;
-}
-.anim-progress-wrap { width:240px; }
-.anim-progress-bar { height:4px; background:#1C1C28; border-radius:50px; overflow:hidden; }
-.anim-progress-fill {
-  height:100%; background:linear-gradient(90deg,#FF6B00,#FFB347);
-  border-radius:50px; width:0;
-  transition:width 0.1s linear;
-}
-.anim-status { font-size:0.78rem; color:var(--muted); font-weight:700; }
-.anim-check {
-  width:60px; height:60px; border-radius:50%;
-  background:var(--green); display:none; align-items:center; justify-content:center;
-  font-size:1.8rem; box-shadow:0 8px 28px rgba(0,214,143,0.4);
-  animation:starPop 0.4s ease forwards;
-}
-
 /* ─── AUTH SCREEN ─── */
 #auth-screen { position:fixed; inset:0; background:var(--dark); z-index:5000; display:none; align-items:center; justify-content:center; padding:20px; overflow-y:auto; background-image:radial-gradient(ellipse at 50% -20%, rgba(255,107,0,0.12) 0%, transparent 60%); }
 .auth-box { width:100%; max-width:420px; animation:fadeUp 0.4s ease; }
@@ -546,23 +505,6 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
 
 </div>
 
-<!-- ════════════════════════════════════════════
-     INSTALL ANIMATION OVERLAY
-════════════════════════════════════════════ -->
-<div id="install-anim">
-  <div class="anim-icon-wrap">
-    <div class="anim-icon">🍊</div>
-    <div class="anim-ring"></div>
-  </div>
-  <div class="anim-app-name">FANTA TASK</div>
-  <div class="anim-progress-wrap">
-    <div class="anim-progress-bar">
-      <div class="anim-progress-fill" id="anim-fill"></div>
-    </div>
-  </div>
-  <div class="anim-status" id="anim-status">Initializing...</div>
-  <div class="anim-check" id="anim-check">✓</div>
-</div>
 
 <!-- AUTH SCREEN -->
 <div id="auth-screen">
@@ -766,87 +708,78 @@ function updateInstTime(){
 }
 updateInstTime(); setInterval(updateInstTime,30000);
 
-// ── Check if already installed as PWA — skip install screen
-var _isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+// ── Check if already installed as PWA — skip install screen completely
+var _isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 if(_isInstalled){
   document.getElementById('install-screen').style.display = 'none';
 }
 
-// ── PWA deferred prompt
+// ── PWA deferred prompt (Android Chrome)
 var _deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); _deferredPrompt = e; });
-
-// ── INSTALL BUTTON LOGIC
-// Simulates Play Store download animation, then shows app
-var _installDone = false;
-window.startInstall = async function(){
-  if(_installDone) return;
-  _installDone = true;
-
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  _deferredPrompt = e;
+  // Show install button clearly
   var btn = document.getElementById('inst-main-btn');
-  var progWrap = document.getElementById('inst-prog-wrap');
-  var progFill = document.getElementById('inst-prog-fill');
-  var progLabel = document.getElementById('inst-prog-label');
-  var progPct = document.getElementById('inst-prog-pct');
+  if(btn) btn.innerHTML = '<span class="btn-icon">📲</span><span>Install App</span>';
+});
 
-  // Change button
-  btn.innerHTML = '<div style="width:20px;height:20px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;"></div><span>Downloading...</span>';
-  btn.style.background = 'linear-gradient(135deg,#888,#555)';
-  btn.style.pointerEvents = 'none';
-  progWrap.style.display = 'block';
-
-  // Try PWA install if available
-  if(_deferredPrompt){ _deferredPrompt.prompt(); _deferredPrompt = null; }
-
-  // Simulate download progress
-  var pct = 0;
-  var labels = ['Downloading...','Verifying...','Installing...','Almost done...'];
-  var interval = setInterval(function(){
-    pct += Math.random() * 8 + 3;
-    if(pct > 100) pct = 100;
-    progFill.style.width = pct + '%';
-    progPct.innerText = Math.floor(pct) + '%';
-    progLabel.innerText = pct < 40 ? labels[0] : pct < 70 ? labels[1] : pct < 90 ? labels[2] : labels[3];
-    if(pct >= 100){
-      clearInterval(interval);
-      progLabel.innerText = '✅ Installed!';
-      btn.innerHTML = '✅ Open App';
-      btn.style.background = 'linear-gradient(135deg,#00A86B,#00D68F)';
-      btn.style.pointerEvents = 'auto';
-      btn.onclick = showInstallAnim;
-      // Auto proceed after short delay
-      setTimeout(showInstallAnim, 600);
-    }
-  }, 80);
-};
-
-// ── Show full-screen install animation then go to app
-window.showInstallAnim = function(){
+// ── When app is installed, hide install screen
+window.addEventListener('appinstalled', function(){
   document.getElementById('install-screen').style.display = 'none';
-  var anim = document.getElementById('install-anim');
-  anim.style.display = 'flex';
+  _deferredPrompt = null;
+});
 
-  var fill = document.getElementById('anim-fill');
-  var status = document.getElementById('anim-status');
-  var check = document.getElementById('anim-check');
-  var steps = ['Setting up your account...','Loading tasks...','Almost ready...','Welcome to Fanta Task! 🎉'];
-  var p = 0;
-  var si = 0;
+// ── Detect iOS
+var _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+var _isAndroid = /android/i.test(navigator.userAgent);
 
-  var iv = setInterval(function(){
-    p += Math.random() * 12 + 5;
-    if(p > 100) p = 100;
-    fill.style.width = p + '%';
-    si = p < 30 ? 0 : p < 60 ? 1 : p < 90 ? 2 : 3;
-    status.innerText = steps[si];
-    if(p >= 100){
-      clearInterval(iv);
-      check.style.display = 'flex';
+// ── iOS instruction modal
+function showIOSGuide(){
+  var overlay = document.getElementById('ios-guide');
+  if(overlay) overlay.style.display = 'flex';
+}
+function hideIOSGuide(){
+  var overlay = document.getElementById('ios-guide');
+  if(overlay) overlay.style.display = 'none';
+  // After closing guide, hide install screen — user will add manually
+  document.getElementById('install-screen').style.display = 'none';
+}
+
+// ── INSTALL BUTTON — main logic
+window.startInstall = async function(){
+  var btn = document.getElementById('inst-main-btn');
+
+  // Android Chrome — native prompt available
+  if(_deferredPrompt){
+    btn.innerHTML = '<span class="btn-icon">⏳</span><span>Installing...</span>';
+    btn.style.pointerEvents = 'none';
+    _deferredPrompt.prompt();
+    var result = await _deferredPrompt.userChoice;
+    _deferredPrompt = null;
+    if(result.outcome === 'accepted'){
+      btn.innerHTML = '✅ Installed! Opening...';
+      btn.style.background = 'linear-gradient(135deg,#00A86B,#00D68F)';
       setTimeout(function(){
-        anim.style.display = 'none';
-      }, 900);
+        document.getElementById('install-screen').style.display = 'none';
+      }, 800);
+    } else {
+      // User dismissed — still let them in
+      btn.innerHTML = '<span class="btn-icon">▶</span><span>Open App</span>';
+      btn.style.pointerEvents = 'auto';
+      btn.onclick = function(){ document.getElementById('install-screen').style.display = 'none'; };
     }
-  }, 60);
+    return;
+  }
+
+  // iOS — show "Add to Home Screen" guide
+  if(_isIOS){
+    showIOSGuide();
+    return;
+  }
+
+  // Fallback (desktop / other) — just open app
+  document.getElementById('install-screen').style.display = 'none';
 };
 
 // ── Helper functions
@@ -876,7 +809,7 @@ function showToast(msg,type){
   setTimeout(function(){t.className='toast';},3000);
 }
 function showScreen(name){
-  ['install-screen','auth-screen','plan-select-screen','pending-screen','main-app','install-anim'].forEach(function(id){
+  ['install-screen','auth-screen','plan-select-screen','pending-screen','main-app'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.style.display='none';
   });
   var map={'auth':'auth-screen','plan-select':'plan-select-screen','pending':'pending-screen','app':'main-app'};
@@ -1158,7 +1091,6 @@ function renderTasks(limit, clicked){
 async function claimTask(i){
   const clicked = UD.clickedIndices||[];
   if(!clicked.includes(i)){
-    window.open("https://www.effectivegatecpm.com/af5sff7er?key=66dd1da5b8b51e17171a2bb8ad979781",'_blank');
     clicked.push(i);
     await update(ref(db,'users/'+UID),{balance:(UD.balance||0)+2, clickedIndices:clicked});
     showToast('+2 PKR earn ho gaya! 🎉','success');
@@ -1266,6 +1198,65 @@ setInterval(()=>{
 },1000);
 </script>
 
-<script src="https://pl28633470.effectivegatecpm.com/48/59/08/4859083f886c1a09ed9a86ac9d282b9b.js"></script>
+<!-- iOS "Add to Home Screen" Guide Modal -->
+<div id="ios-guide" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.85);align-items:flex-end;justify-content:center;">
+  <div style="background:#1C1C28;border-radius:24px 24px 0 0;padding:28px 24px 40px;width:100%;max-width:500px;border-top:3px solid #FF6B00;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:2.5rem;margin-bottom:8px;">🍊</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:1.3rem;font-weight:900;color:#FF6B00;">Install Fanta Task</div>
+      <div style="font-size:0.78rem;color:#6B6B8A;margin-top:4px;">iPhone/iPad ke liye yeh steps follow karein</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:14px;background:#242435;border-radius:12px;padding:14px;">
+        <div style="width:36px;height:36px;background:#FF6B00;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">1</div>
+        <div>
+          <div style="font-size:0.82rem;font-weight:800;color:#F0F0FF;">Share button dabao</div>
+          <div style="font-size:0.7rem;color:#6B6B8A;margin-top:2px;">Safari browser mein neeche <strong style="color:#4A9EFF;">⬆️ Share</strong> button tap karein</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;background:#242435;border-radius:12px;padding:14px;">
+        <div style="width:36px;height:36px;background:#FF6B00;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">2</div>
+        <div>
+          <div style="font-size:0.82rem;font-weight:800;color:#F0F0FF;">"Add to Home Screen" select karein</div>
+          <div style="font-size:0.7rem;color:#6B6B8A;margin-top:2px;">Scroll karein aur <strong style="color:#00D68F;">➕ Add to Home Screen</strong> tap karein</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;background:#242435;border-radius:12px;padding:14px;">
+        <div style="width:36px;height:36px;background:#FF6B00;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">3</div>
+        <div>
+          <div style="font-size:0.82rem;font-weight:800;color:#F0F0FF;">"Add" button dabao</div>
+          <div style="font-size:0.7rem;color:#6B6B8A;margin-top:2px;">Upar right corner mein <strong style="color:#FF6B00;">Add</strong> tap karein — app install ho jayegi!</div>
+        </div>
+      </div>
+    </div>
+    <button onclick="hideIOSGuide()" style="width:100%;padding:15px;border-radius:13px;border:none;background:linear-gradient(135deg,#FF6B00,#E85000);color:#fff;font-size:0.95rem;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;letter-spacing:0.5px;">
+      ✅ Samajh gaya — Open App
+    </button>
+  </div>
+</div>
+
+<!-- Service Worker Registration -->
+<script>
+if('serviceWorker' in navigator){
+  // Inline service worker — no separate file needed
+  var swCode = `
+self.addEventListener('install', function(e){
+  self.skipWaiting();
+});
+self.addEventListener('activate', function(e){
+  e.waitUntil(clients.claim());
+});
+self.addEventListener('fetch', function(e){
+  e.respondWith(fetch(e.request).catch(function(){
+    return caches.match(e.request);
+  }));
+});
+`;
+  var blob = new Blob([swCode], {type:'application/javascript'});
+  var swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(function(){});
+}
+</script>
+<!-- Ad script removed -->
 </body>
 </html>
