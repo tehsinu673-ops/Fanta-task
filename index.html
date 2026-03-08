@@ -12,8 +12,8 @@
 <meta name="application-name" content="Fanta Task Pro">
 <meta name="description" content="Ghar baithe paise kamao! Rozana tasks complete karo aur PKR earn karo.">
 
-<!-- PWA Manifest inline -->
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRmFudGEgVGFzayBQcm8iLCJzaG9ydF9uYW1lIjoiRmFudGEgVGFzayIsImRlc2NyaXB0aW9uIjoiR2hhciBiYWl0aGUgcGFpc2Uga2FtYW8hIFJvemFuYSB0YXNrcyBjb21wbGV0ZSBrYXJvIGF1ciBQS1IgZWFybiBrYXJvLiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMEEwQTBGIiwidGhlbWVfY29sb3IiOiIjRkY2QjAwIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsJTNDc3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInJTNFJTNDcmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgcng9JzExMicgZmlsbD0nJTIzRkY2QjAwJy8lM0UlM0N0ZXh0IHg9JzUwJSUyNicjMzg7JyB5PSc1MCUlMjYjMzg7JyBkb21pbmFudC1iYXNlbGluZT0nbWlkZGxlJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmb250LXNpemU9JzI4MCclM0XwkI6KJTNDJTJGdGV4dCUzRSUzQyUyRnN2ZyUzRSIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
 
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -425,7 +425,7 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
       </div>
       <div class="inst-progress-bar"><div class="inst-progress-fill" id="inst-prog-fill"></div></div>
     </div>
-    <p style="font-size:0.67rem;color:#bbb;text-align:center;margin-top:10px;">
+    <p style="font-size:0.67rem;color:#bbb;text-align:center;margin-top:10px;" id="inst-hint-text">
       <i class="fas fa-lock" style="color:#4CAF50;"></i> Secure &bull; No Hidden Fees &bull; 100% Free
     </p>
   </div>
@@ -559,8 +559,8 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b1')">
       <div class="plan-card-head"><h3>🟢 Starter Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b1"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 500 PKR</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (500 PKR) TO JOIN STARTER PLAN. HERE YOU WILL DO DAILY TASKS AND EARN DAILY. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 500 PKR &nbsp;|&nbsp; Daily Earning: <b>4 PKR</b> (10 tasks)</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (500 PKR) TO JOIN STARTER PLAN. DAILY 10 TASKS COMPLETE KAREIN AUR 4 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-1">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-1">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-1" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-1" placeholder="Apna Phone Number (03XXXXXXXXX)">
@@ -570,8 +570,8 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b2')">
       <div class="plan-card-head"><h3>🥉 Bronze Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b2"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 1000 PKR</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (1000 PKR) TO JOIN BRONZE PLAN. HERE YOU WILL DO DAILY TASKS AND EARN DAILY. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 1000 PKR &nbsp;|&nbsp; Daily Earning: <b>6 PKR</b> (20 tasks)</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (1000 PKR) TO JOIN BRONZE PLAN. DAILY 20 TASKS COMPLETE KAREIN AUR 6 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-2">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-2">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-2" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-2" placeholder="Apna Phone Number (03XXXXXXXXX)">
@@ -581,8 +581,8 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b3')">
       <div class="plan-card-head"><h3>🥈 Silver Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b3"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 2500 PKR</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (2500 PKR) TO JOIN SILVER PLAN. HERE YOU WILL DO DAILY TASKS AND EARN DAILY. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 2500 PKR &nbsp;|&nbsp; Daily Earning: <b>10 PKR</b> (35 tasks)</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (2500 PKR) TO JOIN SILVER PLAN. DAILY 35 TASKS COMPLETE KAREIN AUR 10 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-3">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-3">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-3" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-3" placeholder="Apna Phone Number (03XXXXXXXXX)">
@@ -592,8 +592,8 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b4')">
       <div class="plan-card-head"><h3>⭐ Gold Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b4"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 5000 PKR</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (5000 PKR) TO JOIN GOLD PLAN. HERE YOU WILL DO DAILY TASKS AND EARN DAILY. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 5000 PKR &nbsp;|&nbsp; Daily Earning: <b>14 PKR</b> (50 tasks)</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (5000 PKR) TO JOIN GOLD PLAN. DAILY 50 TASKS COMPLETE KAREIN AUR 14 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-4">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-4">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-4" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-4" placeholder="Apna Phone Number (03XXXXXXXXX)">
@@ -708,77 +708,118 @@ function updateInstTime(){
 }
 updateInstTime(); setInterval(updateInstTime,30000);
 
-// ── Check if already installed as PWA — skip install screen completely
-var _isInstalled = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-if(_isInstalled){
+// ── Already installed as PWA? Skip install screen
+var _standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+if(_standalone){
   document.getElementById('install-screen').style.display = 'none';
 }
 
-// ── PWA deferred prompt (Android Chrome)
+// ── Detect platform
+var _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+var _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+var _isAndroid = /android/i.test(navigator.userAgent);
+
+// ── Hold the install prompt
 var _deferredPrompt = null;
+var _promptReady = false;
+
 window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
   _deferredPrompt = e;
-  // Show install button clearly
+  _promptReady = true;
+  // Update button text to show it's ready
   var btn = document.getElementById('inst-main-btn');
-  if(btn) btn.innerHTML = '<span class="btn-icon">📲</span><span>Install App</span>';
+  var hint = document.getElementById('inst-hint-text');
+  if(btn) btn.innerHTML = '<span class="btn-icon">📲</span><span id="inst-btn-text">Install App — Free</span>';
+  if(hint) hint.innerHTML = '<i class="fas fa-check-circle" style="color:#4CAF50;"></i> Install button ready hai — tap karein!';
 });
 
-// ── When app is installed, hide install screen
+// ── App installed successfully
 window.addEventListener('appinstalled', function(){
   document.getElementById('install-screen').style.display = 'none';
   _deferredPrompt = null;
 });
 
-// ── Detect iOS
-var _isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-var _isAndroid = /android/i.test(navigator.userAgent);
-
-// ── iOS instruction modal
+// ── Show iOS bottom sheet guide
 function showIOSGuide(){
-  var overlay = document.getElementById('ios-guide');
-  if(overlay) overlay.style.display = 'flex';
+  document.getElementById('ios-guide').style.display = 'flex';
 }
 function hideIOSGuide(){
-  var overlay = document.getElementById('ios-guide');
-  if(overlay) overlay.style.display = 'none';
-  // After closing guide, hide install screen — user will add manually
+  document.getElementById('ios-guide').style.display = 'none';
   document.getElementById('install-screen').style.display = 'none';
 }
 
-// ── INSTALL BUTTON — main logic
-window.startInstall = async function(){
+// ── Show progress animation then hide install screen
+function runInstallProgress(callback){
   var btn = document.getElementById('inst-main-btn');
+  var wrap = document.getElementById('inst-prog-wrap');
+  var fill = document.getElementById('inst-prog-fill');
+  var label = document.getElementById('inst-prog-label');
+  var pct = document.getElementById('inst-prog-pct');
 
-  // Android Chrome — native prompt available
-  if(_deferredPrompt){
-    btn.innerHTML = '<span class="btn-icon">⏳</span><span>Installing...</span>';
-    btn.style.pointerEvents = 'none';
-    _deferredPrompt.prompt();
-    var result = await _deferredPrompt.userChoice;
-    _deferredPrompt = null;
-    if(result.outcome === 'accepted'){
-      btn.innerHTML = '✅ Installed! Opening...';
+  btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<div style="width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;"></div><span>Installing...</span>';
+  wrap.style.display = 'block';
+
+  var p = 0;
+  var labels = ['Downloading...','Verifying...','Installing...','Finishing...'];
+  var iv = setInterval(function(){
+    p += Math.random()*14 + 4;
+    if(p > 100) p = 100;
+    fill.style.width = p + '%';
+    pct.innerText = Math.floor(p) + '%';
+    label.innerText = p<30?labels[0]:p<60?labels[1]:p<90?labels[2]:labels[3];
+    if(p >= 100){
+      clearInterval(iv);
+      label.innerText = '✅ Install complete!';
+      btn.innerHTML = '✅ Opening App...';
       btn.style.background = 'linear-gradient(135deg,#00A86B,#00D68F)';
       setTimeout(function(){
         document.getElementById('install-screen').style.display = 'none';
-      }, 800);
+        if(callback) callback();
+      }, 700);
+    }
+  }, 60);
+}
+
+// ── MAIN INSTALL BUTTON
+window.startInstall = async function(){
+
+  // ─ Android Chrome: native install prompt available
+  if(_deferredPrompt){
+    _deferredPrompt.prompt();
+    var choice = await _deferredPrompt.userChoice;
+    _deferredPrompt = null;
+    if(choice.outcome === 'accepted'){
+      // User accepted — show progress then close
+      runInstallProgress(null);
     } else {
-      // User dismissed — still let them in
-      btn.innerHTML = '<span class="btn-icon">▶</span><span>Open App</span>';
+      // Dismissed — offer to open anyway
+      var btn = document.getElementById('inst-main-btn');
+      btn.innerHTML = '<span class="btn-icon">▶</span><span>Open App Without Installing</span>';
+      btn.style.background = 'linear-gradient(135deg,#555,#333)';
       btn.style.pointerEvents = 'auto';
       btn.onclick = function(){ document.getElementById('install-screen').style.display = 'none'; };
     }
     return;
   }
 
-  // iOS — show "Add to Home Screen" guide
+  // ─ iOS Safari: show Add to Home Screen guide
   if(_isIOS){
     showIOSGuide();
     return;
   }
 
-  // Fallback (desktop / other) — just open app
+  // ─ Android but prompt not fired yet (not HTTPS or already installed)
+  if(_isAndroid && !_promptReady){
+    // Show progress and open app — user can install from browser menu
+    var hint = document.getElementById('inst-hint-text');
+    if(hint) hint.innerHTML = '<i class="fas fa-info-circle" style="color:#FF6B00;"></i> Browser menu se bhi install kar sakte hain';
+    runInstallProgress(null);
+    return;
+  }
+
+  // ─ Desktop or other — just open app
   document.getElementById('install-screen').style.display = 'none';
 };
 
@@ -979,6 +1020,22 @@ function startListener(){
       const pLimit = UD.pendingPlanLimit || UD.dailyLimit || 0;
       const pMinWd = UD.pendingPlanMinWd || UD.minWithdraw || 0;
       if(pCost > 0 && pLimit > 0){
+
+        // ✅ Ab referral count hoga — plan approve + activate hone pe
+        if(UD.referredBy && !UD.referralCounted){
+          try {
+            const rRef = ref(db,'users/'+UD.referredBy);
+            const rSnap = await get(rRef);
+            if(rSnap.exists()){
+              const rv = rSnap.val();
+              await update(rRef,{
+                qualifyingRefs: (rv.qualifyingRefs||0) + 1,
+                referralEarningBonus: (rv.referralEarningBonus||0) + 10
+              });
+            }
+          } catch(e){}
+        }
+
         await update(ref(db,'users/'+UID), {
           balance: 0,
           dailyLimit: pLimit,
@@ -988,6 +1045,7 @@ function startListener(){
           clickedIndices: [],
           planActive: true,
           depositStatus: 'active',
+          referralCounted: true,   // dobara count na ho
           lastReset: new Date().toDateString(),
           pendingPlanCost: null,
           pendingPlanLimit: null,
@@ -1016,9 +1074,10 @@ function renderApp(now){
 
   document.getElementById('top-bal-val').innerText = bal;
   document.getElementById('bal-main').innerText = bal;
+  const reward = getTaskReward(planCost, limit);
   document.getElementById('sp-total').innerText = limit;
   document.getElementById('sp-done').innerText = done;
-  document.getElementById('sp-earned').innerText = (done*2).toFixed(0);
+  document.getElementById('sp-earned').innerText = (done * reward).toFixed(2);
 
   const en = document.getElementById('plan-expiry-note');
   if(expiry>0 && now<expiry){
@@ -1036,11 +1095,11 @@ function renderApp(now){
 
   const wCount = UD.withdrawCount||0;
   const avRefs = (UD.qualifyingRefs||0)-(UD.usedQualifyingRefs||0);
-  const refsReq = Math.max(1, Math.floor(planCost/500));
+  const refsReq = 1;
   const wb = document.getElementById('wd-warn-box');
   if(wCount>0 && avRefs<refsReq){
     wb.style.display='block';
-    wb.innerHTML='<i class="fas fa-exclamation-triangle"></i> Withdraw k liye '+refsReq+' refer karne honge ('+avRefs+'/'+refsReq+' complete)';
+    wb.innerHTML='<i class="fas fa-exclamation-triangle"></i> Agli withdraw k liye 1 referral karna hoga ('+avRefs+'/1 complete)';
   } else { wb.style.display='none'; }
 
   document.getElementById('prof-phone-val').innerText = UD.phone||'—';
@@ -1068,6 +1127,18 @@ function renderApp(now){
   fetchHistory('withdrawals','wd-history-list');
 }
 
+// Per-task reward based on plan cost
+function getTaskReward(planCost, dailyLimit){
+  // Base daily earnings per plan
+  const dailyMap = {500:4, 1000:6, 2500:10, 5000:14};
+  const baseDaily = dailyMap[planCost] || 2;
+  // Referral bonus: +10 PKR daily per qualifying referral used
+  const refBonus = (UD.referralEarningBonus||0);
+  const totalDaily = baseDaily + refBonus;
+  if(!dailyLimit) return totalDaily;
+  return Math.round((totalDaily / dailyLimit) * 100) / 100;
+}
+
 function renderTasks(limit, clicked){
   const g = document.getElementById('task-grid');
   g.innerHTML='';
@@ -1075,6 +1146,7 @@ function renderTasks(limit, clicked){
     g.innerHTML='<div class="empty-tasks"><span class="et-icon">📦</span><p>Abhi koi active plan nahi hai.<br>Admin approve karne ke baad tasks dikhenge.</p></div>';
     return;
   }
+  const reward = getTaskReward(UD.planCost||0, limit);
   for(let i=0;i<limit;i++){
     const done=clicked.includes(i);
     const d=document.createElement('div');
@@ -1082,18 +1154,19 @@ function renderTasks(limit, clicked){
     d.innerHTML=(done?'<div class="done-chip">Done</div>':'')+
       '<span class="tc-emoji">🍊</span>'+
       '<div class="tc-name">Task '+(i+1)+'</div>'+
-      '<div class="tc-reward">'+(done?'✓ +2 PKR':'+2 PKR')+'</div>';
-    if(!done) d.onclick=()=>claimTask(i);
+      '<div class="tc-reward">'+(done?'✓ +'+reward+' PKR':'+'+reward+' PKR')+'</div>';
+    if(!done) d.onclick=()=>claimTask(i, reward);
     g.appendChild(d);
   }
 }
 
-async function claimTask(i){
+async function claimTask(i, reward){
   const clicked = UD.clickedIndices||[];
   if(!clicked.includes(i)){
     clicked.push(i);
-    await update(ref(db,'users/'+UID),{balance:(UD.balance||0)+2, clickedIndices:clicked});
-    showToast('+2 PKR earn ho gaya! 🎉','success');
+    const earned = reward || getTaskReward(UD.planCost||0, UD.dailyLimit||1);
+    await update(ref(db,'users/'+UID),{balance:Math.round(((UD.balance||0)+earned)*100)/100, clickedIndices:clicked});
+    showToast('+'+earned+' PKR earn ho gaya! 🎉','success');
   }
 }
 
@@ -1101,18 +1174,12 @@ window._submitPlan = async function(cost,limit,minWd,idx,trx,phone){
   if(!UID||!UD){ showToast('Pehle login karein','error'); return; }
   showLoader('Submit ho raha hai...');
   try {
-    if(UD.referredBy){
-      const rRef=ref(db,'users/'+UD.referredBy);
-      const rSnap=await get(rRef);
-      if(rSnap.exists()) await update(rRef,{
-        balance:(rSnap.val().balance||0)+10,
-        qualifyingRefs:(rSnap.val().qualifyingRefs||0)+1
-      });
-    }
+    // ⚠️ Referral count NAHI hoga yahan — sirf plan approve hone pe hoga
     await set(push(ref(db,'deposits')),{
       uid:UID, phone:phone||UD.phone||'', email:UD.gmail||'',
       amount:cost, trx:trx, method:'EasyPaisa',
       planSelected:cost, planLimit:limit, planMinWd:minWd,
+      referredBy: UD.referredBy||null,
       status:'pending', date:new Date().toLocaleString()
     });
     await update(ref(db,'users/'+UID),{
@@ -1142,8 +1209,8 @@ window.doWithdraw = async function(){
   if(a<minWd){ showToast('Minimum PKR '+minWd+' withdraw karo','error'); return; }
   const wCount=UD.withdrawCount||0;
   const avRefs=(UD.qualifyingRefs||0)-(UD.usedQualifyingRefs||0);
-  const refsReq=Math.max(1,Math.floor((UD.planCost||0)/500));
-  if(wCount>0 && avRefs<refsReq){ showToast(refsReq+' refer karne honge pehle!','error'); return; }
+  const refsReq = 1; // Har withdraw ke liye sirf 1 referral
+  if(wCount>0 && avRefs<refsReq){ showToast('1 referral karna zaruri hai pehle!','error'); return; }
   showLoader('Request send ho rahi hai...');
   await set(push(ref(db,'withdrawals')),{
     uid:UID, phone:UD.phone||'', email:UD.gmail||'',
@@ -1238,23 +1305,10 @@ setInterval(()=>{
 <!-- Service Worker Registration -->
 <script>
 if('serviceWorker' in navigator){
-  // Inline service worker — no separate file needed
-  var swCode = `
-self.addEventListener('install', function(e){
-  self.skipWaiting();
-});
-self.addEventListener('activate', function(e){
-  e.waitUntil(clients.claim());
-});
-self.addEventListener('fetch', function(e){
-  e.respondWith(fetch(e.request).catch(function(){
-    return caches.match(e.request);
-  }));
-});
-`;
-  var blob = new Blob([swCode], {type:'application/javascript'});
-  var swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(function(){});
+  navigator.serviceWorker.register('/sw.js').catch(function(){
+    // Fallback: try relative path
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
 }
 </script>
 <!-- Ad script removed -->
