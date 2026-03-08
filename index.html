@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -344,7 +345,6 @@ body { padding-bottom:75px; }
 .st-pending { background:rgba(255,180,0,0.12); color:#FFB400; border:1px solid rgba(255,180,0,0.25); }
 .st-approved { background:rgba(0,214,143,0.1); color:var(--green); border:1px solid rgba(0,214,143,0.25); }
 .st-rejected { background:rgba(255,56,96,0.1); color:var(--red); border:1px solid rgba(255,56,96,0.25); }
-.no-hist { color:var(--muted); font-size:0.78rem; text-align:center; padding:20px; }
 nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--dark2); border-top:1px solid var(--border); display:flex; justify-content:space-around; padding:10px 0 16px; left:50%; transform:translateX(-50%); z-index:1000; }
 .nav-btn { color:var(--muted); text-align:center; font-size:0.65rem; font-weight:800; cursor:pointer; flex:1; transition:color 0.2s; }
 .nav-btn i { font-size:1.3rem; display:block; margin-bottom:3px; transition:transform 0.2s; }
@@ -460,7 +460,7 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
       <b>Fanta Task Pro</b> — Pakistan ka #1 earning app jahan aap <b>ghar baithe rozana PKR earn</b> kar sakte hain.<br><br>
       Sirf daily tasks complete karo aur apni kamayi <b>EasyPaisa ya JazzCash</b> pe receive karo. Koi technical skill ki zaroorat nahi — bilkul asaan!<br><br>
       ✅ Rozana tasks milenge<br>
-      💰 Har task pe PKR 2 earn karo<br>
+      💰 Har task pe PKR earn karo<br>
       📲 EasyPaisa / JazzCash withdrawal<br>
       👥 Referral se extra earning<br>
       🔒 100% Secure & Trusted
@@ -556,50 +556,59 @@ nav { position:fixed; bottom:0; width:100%; max-width:500px; background:var(--da
   </div>
   <div class="reject-bar" id="reject-bar"><p>❌ Your Transaction ID Was Rejected By Admin. Please Try Again.</p></div>
   <div class="plans-list">
+
+    <!-- STARTER PLAN -->
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b1')">
       <div class="plan-card-head"><h3>🟢 Starter Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b1"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 500 PKR &nbsp;|&nbsp; Daily Earning: <b>4 PKR</b> (10 tasks)</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (500 PKR) TO JOIN STARTER PLAN. DAILY 10 TASKS COMPLETE KAREIN AUR 4 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 500 PKR</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (500 PKR) TO JOIN STARTER PLAN. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-1">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-1">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-1" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-1" placeholder="Apna Phone Number (03XXXXXXXXX)">
         <button class="plan-submit-btn" data-cost="500" data-limit="10" data-minwd="100" data-idx="1" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
+
+    <!-- BRONZE PLAN -->
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b2')">
       <div class="plan-card-head"><h3>🥉 Bronze Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b2"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 1000 PKR &nbsp;|&nbsp; Daily Earning: <b>6 PKR</b> (20 tasks)</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (1000 PKR) TO JOIN BRONZE PLAN. DAILY 20 TASKS COMPLETE KAREIN AUR 6 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 1000 PKR</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (1000 PKR) TO JOIN BRONZE PLAN. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-2">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-2">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-2" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-2" placeholder="Apna Phone Number (03XXXXXXXXX)">
         <button class="plan-submit-btn" data-cost="1000" data-limit="20" data-minwd="300" data-idx="2" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
+
+    <!-- SILVER PLAN -->
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b3')">
       <div class="plan-card-head"><h3>🥈 Silver Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b3"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 2500 PKR &nbsp;|&nbsp; Daily Earning: <b>10 PKR</b> (35 tasks)</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (2500 PKR) TO JOIN SILVER PLAN. DAILY 35 TASKS COMPLETE KAREIN AUR 10 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 2500 PKR</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (2500 PKR) TO JOIN SILVER PLAN. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-3">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-3">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-3" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-3" placeholder="Apna Phone Number (03XXXXXXXXX)">
         <button class="plan-submit-btn" data-cost="2500" data-limit="35" data-minwd="500" data-idx="3" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
+
+    <!-- GOLD PLAN -->
     <div class="plan-card-outer" onclick="togglePlan(this,'plan-b4')">
       <div class="plan-card-head"><h3>⭐ Gold Plan</h3><i class="fas fa-chevron-down plan-arrow"></i></div>
       <div class="plan-card-body" id="plan-b4"><div class="plan-body-inner">
-        <div class="plan-price-tag">Price: 5000 PKR &nbsp;|&nbsp; Daily Earning: <b>14 PKR</b> (50 tasks)</div>
-        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (5000 PKR) TO JOIN GOLD PLAN. DAILY 50 TASKS COMPLETE KAREIN AUR 14 PKR EARN KAREIN. REFER KARO TU DAILY +10 PKR EXTRA MILEGA. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
+        <div class="plan-price-tag">Price: 5000 PKR</div>
+        <p class="plan-desc-text">WELCOME TO FANTA TASK PRO | YOU HAVE TO PAY (5000 PKR) TO JOIN GOLD PLAN. SEND YOUR AMOUNT ON GIVEN ACCOUNT NUMBER. IF YOU PUT WRONG TRANSACTION ID YOUR ACCOUNT WILL BE REJECTED.</p>
         <div class="ep-green-box"><div class="ep-title">EasyPaisa</div><div class="ep-holder" id="ep-holder-4">TEHSIN ULLAH</div><div class="ep-number" id="ep-number-4">0301-9016682</div></div>
         <input class="plan-field" type="text" id="trx-4" placeholder="Transaction ID (Receipt se copy karein)">
         <input class="plan-field" type="tel" id="ph-4" placeholder="Apna Phone Number (03XXXXXXXXX)">
         <button class="plan-submit-btn" data-cost="5000" data-limit="50" data-minwd="1000" data-idx="4" onclick="handlePlanSubmit(this)"><i class="fas fa-paper-plane"></i> SUBMIT</button>
       </div></div>
     </div>
+
   </div>
   <div class="ps-logout-link" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
 </div>
@@ -727,20 +736,17 @@ window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
   _deferredPrompt = e;
   _promptReady = true;
-  // Update button text to show it's ready
   var btn = document.getElementById('inst-main-btn');
   var hint = document.getElementById('inst-hint-text');
   if(btn) btn.innerHTML = '<span class="btn-icon">📲</span><span id="inst-btn-text">Install App — Free</span>';
   if(hint) hint.innerHTML = '<i class="fas fa-check-circle" style="color:#4CAF50;"></i> Install button ready hai — tap karein!';
 });
 
-// ── App installed successfully
 window.addEventListener('appinstalled', function(){
   document.getElementById('install-screen').style.display = 'none';
   _deferredPrompt = null;
 });
 
-// ── Show iOS bottom sheet guide
 function showIOSGuide(){
   document.getElementById('ios-guide').style.display = 'flex';
 }
@@ -749,7 +755,6 @@ function hideIOSGuide(){
   document.getElementById('install-screen').style.display = 'none';
 }
 
-// ── Show progress animation then hide install screen
 function runInstallProgress(callback){
   var btn = document.getElementById('inst-main-btn');
   var wrap = document.getElementById('inst-prog-wrap');
@@ -782,19 +787,14 @@ function runInstallProgress(callback){
   }, 60);
 }
 
-// ── MAIN INSTALL BUTTON
 window.startInstall = async function(){
-
-  // ─ Android Chrome: native install prompt available
   if(_deferredPrompt){
     _deferredPrompt.prompt();
     var choice = await _deferredPrompt.userChoice;
     _deferredPrompt = null;
     if(choice.outcome === 'accepted'){
-      // User accepted — show progress then close
       runInstallProgress(null);
     } else {
-      // Dismissed — offer to open anyway
       var btn = document.getElementById('inst-main-btn');
       btn.innerHTML = '<span class="btn-icon">▶</span><span>Open App Without Installing</span>';
       btn.style.background = 'linear-gradient(135deg,#555,#333)';
@@ -803,27 +803,16 @@ window.startInstall = async function(){
     }
     return;
   }
-
-  // ─ iOS Safari: show Add to Home Screen guide
-  if(_isIOS){
-    showIOSGuide();
-    return;
-  }
-
-  // ─ Android but prompt not fired yet (not HTTPS or already installed)
+  if(_isIOS){ showIOSGuide(); return; }
   if(_isAndroid && !_promptReady){
-    // Show progress and open app — user can install from browser menu
     var hint = document.getElementById('inst-hint-text');
     if(hint) hint.innerHTML = '<i class="fas fa-info-circle" style="color:#FF6B00;"></i> Browser menu se bhi install kar sakte hain';
     runInstallProgress(null);
     return;
   }
-
-  // ─ Desktop or other — just open app
   document.getElementById('install-screen').style.display = 'none';
 };
 
-// ── Helper functions
 function switchTab(tab){
   var isL = tab==='login';
   document.getElementById('login-form').style.display = isL?'block':'none';
@@ -1014,14 +1003,11 @@ function startListener(){
 
     const ds = UD.depositStatus || '';
 
-    // Auto-activate plan when admin approves
     if(ds === 'approved' && !planActive){
       const pCost  = UD.pendingPlanCost  || UD.planCost  || 0;
       const pLimit = UD.pendingPlanLimit || UD.dailyLimit || 0;
       const pMinWd = UD.pendingPlanMinWd || UD.minWithdraw || 0;
       if(pCost > 0 && pLimit > 0){
-
-        // ✅ Ab referral count hoga — plan approve + activate hone pe
         if(UD.referredBy && !UD.referralCounted){
           try {
             const rRef = ref(db,'users/'+UD.referredBy);
@@ -1035,7 +1021,6 @@ function startListener(){
             }
           } catch(e){}
         }
-
         await update(ref(db,'users/'+UID), {
           balance: 0,
           dailyLimit: pLimit,
@@ -1045,7 +1030,7 @@ function startListener(){
           clickedIndices: [],
           planActive: true,
           depositStatus: 'active',
-          referralCounted: true,   // dobara count na ho
+          referralCounted: true,
           lastReset: new Date().toDateString(),
           pendingPlanCost: null,
           pendingPlanLimit: null,
@@ -1127,12 +1112,9 @@ function renderApp(now){
   fetchHistory('withdrawals','wd-history-list');
 }
 
-// Per-task reward based on plan cost
 function getTaskReward(planCost, dailyLimit){
-  // Base daily earnings per plan
   const dailyMap = {500:4, 1000:6, 2500:10, 5000:14};
   const baseDaily = dailyMap[planCost] || 2;
-  // Referral bonus: +10 PKR daily per qualifying referral used
   const refBonus = (UD.referralEarningBonus||0);
   const totalDaily = baseDaily + refBonus;
   if(!dailyLimit) return totalDaily;
@@ -1174,7 +1156,6 @@ window._submitPlan = async function(cost,limit,minWd,idx,trx,phone){
   if(!UID||!UD){ showToast('Pehle login karein','error'); return; }
   showLoader('Submit ho raha hai...');
   try {
-    // ⚠️ Referral count NAHI hoga yahan — sirf plan approve hone pe hoga
     await set(push(ref(db,'deposits')),{
       uid:UID, phone:phone||UD.phone||'', email:UD.gmail||'',
       amount:cost, trx:trx, method:'EasyPaisa',
@@ -1209,7 +1190,7 @@ window.doWithdraw = async function(){
   if(a<minWd){ showToast('Minimum PKR '+minWd+' withdraw karo','error'); return; }
   const wCount=UD.withdrawCount||0;
   const avRefs=(UD.qualifyingRefs||0)-(UD.usedQualifyingRefs||0);
-  const refsReq = 1; // Har withdraw ke liye sirf 1 referral
+  const refsReq = 1;
   if(wCount>0 && avRefs<refsReq){ showToast('1 referral karna zaruri hai pehle!','error'); return; }
   showLoader('Request send ho rahi hai...');
   await set(push(ref(db,'withdrawals')),{
@@ -1306,11 +1287,9 @@ setInterval(()=>{
 <script>
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/sw.js').catch(function(){
-    // Fallback: try relative path
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });
 }
 </script>
-<!-- Ad script removed -->
 </body>
 </html>
